@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
 
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 
-before((done) => {
+before( (done) => {
     mongoose.connect('mongodb://localhost/users_test', { useNewUrlParser: true });
     mongoose.connection
-        .once('open', () => { done(); })
+        .once('open', () => {
+            console.log('Connection successful.');
+            done(); 
+        })
         .on('error', (error) => {
             console.warn('Warning', error);
         });
@@ -13,9 +16,14 @@ before((done) => {
 
 
 
-beforeEach((done) => {
-    mongoose.connection.collections.users.drop(() => {
-        // Ready to run the next test
-        done();
+beforeEach( (done) => {
+    const { users, comments, blogposts } = mongoose.connection.collections;
+    users.drop(() => {
+        comments.drop(() => {
+            blogposts.drop(() => {
+                done();
+            });
+        });
     });
+    console.log('Collections dropped');
 });
