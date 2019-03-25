@@ -20,7 +20,7 @@ describe('Associations', () => {
 
     });
 
-    it('saves a relation between a user and a blogpost', (done) => {
+    xit('saves a relation between a user and a blogpost', (done) => {
         User.findOne({ name: 'Billy' })
             .populate('blogPosts')
             .then((user) => {
@@ -30,7 +30,7 @@ describe('Associations', () => {
             });
     });
 
-    it.only('saves a full relation graph', (done) => {
+    it('saves a full relation graph', (done) => {
         User.findOne({name: 'Billy'})
             .populate({
                 path: 'blogPosts',
